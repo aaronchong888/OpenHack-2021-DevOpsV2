@@ -62,7 +62,6 @@ jobs:
         url: https://${{ env.AZURE_WEBAPP_NAME }}-staging.azurewebsites.net/api/healthcheck/user
         max-attempts: 10
         retry-delay: 6s
-        retry-all: yes
 
   swap-deployment-slots:
     needs: staging-health-check
