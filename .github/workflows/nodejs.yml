@@ -41,12 +41,12 @@ jobs:
     - name: Run unit tests
       run: npm test
     - name: Create an issue if failed
-      if: failure()
-      - uses: JasonEtco/create-an-issue@v2
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          assignees: aaronchong888
-        id: create-issue
-        - run: 'echo Created issue number ${{ steps.create-issue.outputs.number }}'
-        - run: 'echo Created ${{ steps.create-issue.outputs.url }}'
+      if: ${{ failure() }}
+      uses: JasonEtco/create-an-issue@v2
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        assignees: aaronchong888
+      id: create-issue
+      run: 'echo Created issue number ${{ steps.create-issue.outputs.number }}'
+      run: 'echo Created ${{ steps.create-issue.outputs.url }}'
