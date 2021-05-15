@@ -37,7 +37,7 @@
 # subdirectories.
 # /docs/ @doctocat
 
-/apis/poi/ @aachong-OpenHackOrg/devopsv2-poi
-/apis/trips/ @aachong-OpenHackOrg/devopsv2-trips
-/apis/user-java/ @aachong-OpenHackOrg/devopsv2-user-java
-/apis/userprofile/ @aachong-OpenHackOrg/devopsv2-userprofile
+/apis/poi/ @aaronchong888
+/apis/trips/ @aaronchong888
+/apis/user-java/ @aaronchong888
+/apis/userprofile/ @aaronchong888
