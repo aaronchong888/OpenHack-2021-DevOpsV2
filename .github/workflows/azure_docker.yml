@@ -12,7 +12,7 @@ on:
 #
 # Change these variables for your configuration:
 env:
-#  AZURE_RESOURCE_GROUP_NAME: openhackaachongrg   # set this to your resource group name
+  AZURE_RESOURCE_GROUP_NAME: openhackaachongrg   # set this to your resource group name
   AZURE_WEBAPP_NAME: openhackaachonguserprofile   # set this to your application's name
   CONTAINER_REGISTRY: ${{ secrets.REGISTRY_URL }}  # set secret with Container Registry URL, example : xyz.azurecr.io 
   
@@ -76,6 +76,6 @@ jobs:
     
     - name: Swap Deployment Slot
       run: |
-        az webapp deployment slot swap -n ${{ env.AZURE_WEBAPP_NAME }} --slot staging --target-slot production
+        az webapp deployment slot swap -g ${{ AZURE_RESOURCE_GROUP_NAME }} -n ${{ env.AZURE_WEBAPP_NAME }} --slot staging --target-slot production
 
 # For more samples to get started with GitHub Action workflows to deploy to Azure, refer to https://github.com/Azure/actions-workflow-samples
