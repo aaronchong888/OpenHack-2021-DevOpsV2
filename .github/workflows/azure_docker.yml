@@ -1,0 +1,69 @@
+name: Build and deploy Docker app to Azure
+
+on: 
+  push:
+    branches: [ main ]
+    paths:
+      - apis/userprofile/**
+      
+# CONFIGURATION
+# Set up the following secrets in your repository:
+#   AZURE_CREDENTIALS, REGISTRY_USERNAME, REGISTRY_PASSWORD, REGISTRY_URL
+#
+# Change these variables for your configuration:
+env:
+  AZURE_WEBAPP_NAME: openhackaachonguserprofile   # set this to your application's name
+  CONTAINER_REGISTRY: ${{ secrets.REGISTRY_URL }}  # set secret with Container Registry URL, example : xyz.azurecr.io 
+  
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@master
+    - name: Azure authentication
+      uses: azure/login@v1
+      with:
+        creds: ${{ secrets.AZURE_CREDENTIALS }}
+    - name: ACR authentication
+      uses: azure/docker-login@v1
+      with:
+        login-server: ${{ env.CONTAINER_REGISTRY }}
+        username: ${{ secrets.REGISTRY_USERNAME }}
+        password: ${{ secrets.REGISTRY_PASSWORD }}    
+    - name: Docker Build & Push to ACR
+      run: |
+        docker build . -t ${{ env.CONTAINER_REGISTRY }}/devopsoh/api-userprofile:${{ github.sha }}
+        docker push ${{ env.CONTAINER_REGISTRY }}/devopsoh/api-userprofile:${{ github.sha }} 
+
+# Uncomment the below action snippet if the Web app credentials are not updated as web app settings
+#     - name: Set Web App ACR authentication
+#       uses: Azure/appservice-settings@v1
+#       with:
+#         app-name: ${{ env.AZURE_WEBAPP_NAME }} 
+#         app-settings-json: |
+#           [
+#               {
+#                   "name": "DOCKER_REGISTRY_SERVER_PASSWORD",
+#                   "value": "${{ secrets.REGISTRY_PASSWORD }}",
+#                   "slotSetting": false
+#               },
+#               {
+#                   "name": "DOCKER_REGISTRY_SERVER_URL",
+#                   "value": "https://${{ env.CONTAINER_REGISTRY }}",
+#                   "slotSetting": false
+#               },
+#               {
+#                   "name": "DOCKER_REGISTRY_SERVER_USERNAME",
+#                   "value": "${{ secrets.REGISTRY_USERNAME  }}",
+#                   "slotSetting": false
+#               }
+#           ]
+
+    - name: 'Deploy to Azure Web App for Container'
+      uses: azure/webapps-deploy@v2
+      with: 
+        app-name: ${{ env.AZURE_WEBAPP_NAME }} 
+        images: ${{ env.CONTAINER_REGISTRY }}/devopsoh/api-userprofile:${{ github.sha }}
+#         startup-command: 'npm start'    # Include start up command to start the app container
+
+# For more samples to get started with GitHub Action workflows to deploy to Azure, refer to https://github.com/Azure/actions-workflow-samples
