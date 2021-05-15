@@ -13,7 +13,7 @@ module.exports = {
      * operationId: 
      */
     get: {
-        200: function (req, res, callback) {
+        500: function (req, res, callback) {
             res.json({
                 message: 'healthcheck',
                 status: 'healthy'
