@@ -19,6 +19,10 @@ jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
     environment: dev
+    defaults:
+      run:
+        working-directory: apis/userprofile
+        
     steps:
     - uses: actions/checkout@master
     - name: Azure authentication
