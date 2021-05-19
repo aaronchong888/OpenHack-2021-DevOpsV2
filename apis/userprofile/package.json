@@ -18,10 +18,11 @@
         "tedious": "^2.6.4"
     },
     "devDependencies": {
+        "coveralls": "^3.1.0",
         "eslint": "^5",
         "is-my-json-valid": "^2.17.2",
         "js-yaml": "^3.12.0",
-        "nyc": "^13.0.1",
+        "nyc": "^13.3.0",
         "supertest": "^3.1.0",
         "swagger-parser": "^4.1.0",
         "tap-junit": "^2.0.0",
@@ -35,18 +36,19 @@
         "functions": 9,
         "branches": 1,
         "reporter": [
-          "cobertura",
-          "html"
+            "cobertura",
+            "html"
         ],
         "require": [],
         "cache": true,
         "all": true,
         "temp-directory": "./reports-tmp",
         "report-dir": "./reports"
-      },
+    },
     "scripts": {
         "test": "tape 'tests/**/*.js' | tap-junit --output reports --name userprofile-report",
         "cover": "nyc tape -- 'tests/**/*.js' --cov",
+        "coverage": "nyc report --reporter=text-lcov | coveralls",
         "lint": "eslint .",
         "regenerate": "yo swaggerize:test --framework express --apiPath './config/swagger.json'"
     },
